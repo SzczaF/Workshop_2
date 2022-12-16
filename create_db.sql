@@ -12,4 +12,5 @@ create table users (
 describe users;
 
 
-delete from users u where u.id = ?;
+select * from u
+    sers;
