@@ -41,11 +41,11 @@ public class UserDAO {
     }
 
     public User read(int userId) {
-        try(Connection conn = DbUtil.getConnection()) {
+        try (Connection conn = DbUtil.getConnection()) {
             PreparedStatement prepStatement = conn.prepareStatement(this.READ_USER_QUERY_BY_ID);
             prepStatement.setString(1, String.valueOf(userId));
             ResultSet resultSet = prepStatement.executeQuery();
-            if(resultSet.next()){
+            if (resultSet.next()) {
                 User user = new User();
                 user.setId(resultSet.getInt("id"));
                 user.setUserName(resultSet.getString("username"));
@@ -63,12 +63,12 @@ public class UserDAO {
     }
 
 
-    public void update(User user){
-        try(Connection conn = DbUtil.getConnection()) {
+    public void update(User user) {
+        try (Connection conn = DbUtil.getConnection()) {
             PreparedStatement statement = conn.prepareStatement(this.UPDATE_USER_QUERY);
             statement.setString(1, user.getEmail());
             statement.setString(2, user.getUserName());
-            statement.setString(3, user.getPassword());
+            statement.setString(3, hashPassword(user.getPassword()));
             statement.setInt(4, user.getId());
             statement.executeUpdate();
         } catch (SQLException e) {
@@ -76,9 +76,21 @@ public class UserDAO {
         }
     }
 
+    public void delete(int userId) {
+        try (Connection conn = DbUtil.getConnection()) {
+            PreparedStatement statement = conn.prepareStatement(this.DELETE_USER_QUERY);
+            statement.setInt(1, userId);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+    }
+
     public String hashPassword(String password) {
         return BCrypt.hashpw(password, BCrypt.gensalt());
     }
+
     public String verifyHash(String password, String hashed) {
         return BCrypt.hashpw(password, hashed);
     }

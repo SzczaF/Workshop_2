@@ -31,6 +31,16 @@ public class MainDAO {
         System.out.println(user2);
         System.out.println(user3);
 
+        UserDAO userDAOUpdate = new UserDAO();
+
+        User userUpdate = userDAOUpdate.read(5);
+        userUpdate.setUserName("Luke");
+        userUpdate.setEmail("Luke@skywalker.galaxy");
+        userUpdate.setPassword("1mY0urF@7h3r");
+//        userDAOUpdate.update(userUpdate);
+
+        userDAOUpdate.delete(userUpdate.getId());
+
 
 
     }
