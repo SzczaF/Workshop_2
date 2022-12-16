@@ -2,9 +2,11 @@ package pl.coderlab;
 
 import pl.coderlab.entity.UserDAO;
 
+import java.util.ArrayList;
+
 public class MainDAO {
     public static void main(String[] args) {
-    /*
+
         User user1 = new User();
         user1.setUserName("Jan");
         user1.setEmail("jan.kowalski@gmail.com");
@@ -20,16 +22,16 @@ public class MainDAO {
 
         UserDAO userDAO2 = new UserDAO();
         userDAO2.create(user2);
-    */
+
 
         UserDAO userDAO = new UserDAO();
-        User user1 = userDAO.read(1);
-        User user2 = userDAO.read(5);
-        User user3 = userDAO.read(3);
+        User userR1 = userDAO.read(1);
+        User userR2 = userDAO.read(5);
+        User userR3 = userDAO.read(3);
 
-        System.out.println(user1);
-        System.out.println(user2);
-        System.out.println(user3);
+        System.out.println(userR1);
+        System.out.println(userR2);
+        System.out.println(userR3);
 
         UserDAO userDAOUpdate = new UserDAO();
 
@@ -37,10 +39,15 @@ public class MainDAO {
         userUpdate.setUserName("Luke");
         userUpdate.setEmail("Luke@skywalker.galaxy");
         userUpdate.setPassword("1mY0urF@7h3r");
-//        userDAOUpdate.update(userUpdate);
+        userDAOUpdate.update(userUpdate);
 
         userDAOUpdate.delete(userUpdate.getId());
 
+        UserDAO userDAOFindAll = new UserDAO();
+
+        ArrayList<User> users = userDAOFindAll.findAll();
+
+        System.out.println(users);
 
 
     }

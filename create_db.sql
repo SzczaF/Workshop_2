@@ -1,5 +1,5 @@
-CREATE DATABASE workshop2;
-
+drop database  workshop2;
+CREATE DATABASE workshop2 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 use workshop2;
 
 create table users (

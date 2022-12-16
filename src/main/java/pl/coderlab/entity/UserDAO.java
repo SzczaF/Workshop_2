@@ -5,6 +5,8 @@ import pl.coderlab.DbUtil;
 import pl.coderlab.User;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class UserDAO {
     private static final String CREATE_USER_QUERY =
@@ -19,6 +21,8 @@ public class UserDAO {
                     "where id = ?";
     private static final String DELETE_USER_QUERY =
             "delete from users u where u.id = ?";
+    private static final String READ_ALL_USER_QUERY =
+            "select * from users";
 
     public User create(User user) {
         try (Connection conn = DbUtil.getConnection()) {
@@ -84,6 +88,28 @@ public class UserDAO {
         } catch (SQLException e) {
             e.printStackTrace();
 
+        }
+    }
+
+    public ArrayList<User> findAll() {
+        ArrayList<User> allUsers = new ArrayList<>();
+
+        try (Connection conn = DbUtil.getConnection()) {
+            PreparedStatement statement = conn.prepareStatement(this.READ_ALL_USER_QUERY);
+            ResultSet allUsersResultSet = statement.executeQuery();
+            while (allUsersResultSet.next()) {
+                User user = new User();
+                user.setId(allUsersResultSet.getInt("id"));
+                user.setUserName(allUsersResultSet.getString("username"));
+                user.setEmail(allUsersResultSet.getString("email"));
+                user.setPassword(allUsersResultSet.getString("password"));
+                allUsers.add(user);
+            }
+            return allUsers;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 
