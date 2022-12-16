@@ -9,8 +9,10 @@ import java.sql.*;
 public class UserDAO {
     private static final String CREATE_USER_QUERY =
             "INSERT INTO users(username, email, password) VALUES (?, ?, ?)";
-    private static final String READ_USER_QUERY =
+    private static final String READ_USER_QUERY_BY_ID =
             "select * from users u where u.id = ?";
+    private static final String READ_USER_QUERY_BY_EMAIL =
+            "select * from users u where u.email = ?";
     private static final String UPDATE_USER_QUERY =
             "update users u " +
                     "set u.email = ?, u.username = ?, u.password = ? " +
@@ -40,7 +42,7 @@ public class UserDAO {
 
     public User read(int userId) {
         try(Connection conn = DbUtil.getConnection()) {
-            PreparedStatement prepStatement = conn.prepareStatement(this.READ_USER_QUERY);
+            PreparedStatement prepStatement = conn.prepareStatement(this.READ_USER_QUERY_BY_ID);
             prepStatement.setString(1, String.valueOf(userId));
             ResultSet resultSet = prepStatement.executeQuery();
             if(resultSet.next()){
@@ -57,6 +59,20 @@ public class UserDAO {
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+
+    public void update(User user){
+        try(Connection conn = DbUtil.getConnection()) {
+            PreparedStatement statement = conn.prepareStatement(this.UPDATE_USER_QUERY);
+            statement.setString(1, user.getEmail());
+            statement.setString(2, user.getUserName());
+            statement.setString(3, user.getPassword());
+            statement.setInt(4, user.getId());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 

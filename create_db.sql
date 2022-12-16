@@ -12,5 +12,4 @@ create table users (
 describe users;
 
 
-select * from u
-    sers;
+select * from users;
